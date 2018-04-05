@@ -1,0 +1,9 @@
+{
+  "name": "tar-install",
+  "version": "0.0.1",
+  "dependencies": {
+    "fsx": "aleclarson/fsx#1.6.0",
+    "quest": "aleclarson/quest#0.6.1",
+    "tar-stream": "^1.5.5"
+  }
+}
