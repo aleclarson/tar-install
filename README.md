@@ -1,4 +1,4 @@
-# tar-install v0.0.1
+# tar-install v0.0.2
 
 ```js
 const install = require('tar-install')
