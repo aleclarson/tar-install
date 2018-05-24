@@ -3,10 +3,10 @@ const quest = require('quest')
 const path = require('path')
 const zlib = require('zlib')
 const tar = require('tar-stream')
-const fs = require('fsx')
+const fs = require('saxon')
 
 function tarInstall(url, root) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let ext = path.extname(url)
     if (ext != '.tgz') {
       throw Error('Expected a .tgz url')
@@ -15,14 +15,14 @@ function tarInstall(url, root) {
     root = path.resolve(root)
     let name = path.basename(url, ext)
     let dest = path.join(root, name)
-    if (fs.isDir(dest)) {
+    if (await fs.isDir(dest)) {
       return resolve({
         path: dest,
       })
     }
 
     // Ensure the root exists.
-    fs.writeDir(root)
+    await fs.mkdir(root)
 
     // Fetch the tarball
     quest.stream(url)
@@ -72,14 +72,14 @@ function unpack(dest) {
   let dirs = Object.create(null)
   let limit = 50
   let stream = tar.extract()
-  return stream.on('entry', (head, body, next) => {
+  return stream.on('entry', async (head, body, next) => {
     let name = path.relative('package', head.name)
     let dir = path.dirname(name)
     if (dir && dirs[dir] == null) {
-      fs.writeDir(path.join(dest, dir))
+      await fs.mkdir(path.join(dest, dir))
       dirs[dir] = true
     }
-    let file = body.pipe(fs.write(path.join(dest, name)))
+    let file = body.pipe(fs.writer(path.join(dest, name)))
     if (++n == limit) {
       stream.next = next
       file.on('finish', () => {
