@@ -1,6 +1,9 @@
 {
   "name": "tar-install",
   "version": "0.0.1",
+  "files": [
+    "index.js"
+  ],
   "dependencies": {
     "quest": "aleclarson/quest#0.6.1",
     "saxon": "^0.1.0",
