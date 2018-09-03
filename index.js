@@ -68,23 +68,27 @@ function installDeps(cwd) {
 }
 
 function unpack(dest) {
-  let n = 0
+  let n = 0, limit = 50
   let dirs = Object.create(null)
-  let limit = 50
   let stream = tar.extract()
   return stream.on('entry', async (head, body, next) => {
     let name = path.relative('package', head.name)
+
     let dir = path.dirname(name)
-    if (dir && dirs[dir] == null) {
-      await fs.mkdir(path.join(dest, dir))
+    if (dirs[dir] == null) {
       dirs[dir] = true
+      await fs.mkdir(path.join(dest, dir))
     }
+
+    // Begin copying the file.
     let file = body.pipe(fs.writer(path.join(dest, name)))
-    if (++n == limit) {
-      stream.next = next
-      file.on('finish', () => {
-        if (--n < limit) stream.next()
-      })
-    } else next()
+
+    // Begin the next file immediately, unless we've hit the limit.
+    if (++n < limit) next()
+
+    // Begin the next file afterwards if the limit has been hit.
+    file.on('finish', () => {
+      if (limit == n--) next()
+    })
   })
 }
