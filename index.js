@@ -1,5 +1,5 @@
 const {exec} = require('child_process')
-const quest = require('quest')
+const quest = require('@aleclarson/quest')
 const path = require('path')
 const zlib = require('zlib')
 const tar = require('tar-stream')
