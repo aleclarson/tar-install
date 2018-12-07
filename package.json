@@ -1,6 +1,10 @@
 {
   "name": "tar-install",
   "version": "0.1.0",
+  "license": "MIT",
+  "description": "Unpack a remote .tgz file",
+  "repository": "aleclarson/tar-install",
+  "main": "index.js",
   "files": [
     "index.js"
   ],
@@ -8,5 +12,12 @@
     "@aleclarson/quest": "^0.9.0",
     "saxon": "^0.1.0",
     "tar-stream": "^1.5.5"
-  }
+  },
+  "keywords": [
+    "install",
+    "installer",
+    "tar",
+    "tgz",
+    "unpack"
+  ]
 }
