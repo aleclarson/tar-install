@@ -6,7 +6,7 @@
   ],
   "dependencies": {
     "quest": "aleclarson/quest#0.8.1",
-    "saxon": "^0.1.0",
-    "tar-stream": "^1.5.5"
+    "saxon": "0.1.18",
+    "tar-stream": "1.6.2"
   }
 }
