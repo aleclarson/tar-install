@@ -6,7 +6,8 @@
   "repository": "aleclarson/tar-install",
   "main": "index.js",
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "dependencies": {
     "@aleclarson/quest": "^0.9.0",
