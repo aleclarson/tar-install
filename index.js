@@ -1,4 +1,3 @@
-const {exec} = require('child_process')
 const quest = require('@aleclarson/quest')
 const path = require('path')
 const zlib = require('zlib')
@@ -35,11 +34,7 @@ function tarInstall(url, root) {
     // Unpack its contents
     .pipe(unpack(dest))
     .on('error', onError)
-
-    // Install any dependencies.
-    .on('finish', () => {
-      installDeps(dest).then(resolve, reject)
-    })
+    .on('finish', resolve)
 
     function onError(err) {
       this.end()
@@ -49,23 +44,6 @@ function tarInstall(url, root) {
 }
 
 module.exports = tarInstall
-
-function installDeps(cwd) {
-  return new Promise((resolve, reject) => {
-    const cmd = 'npm install --production --silent --no-shrinkwrap'
-    exec(cmd, {cwd}, (error, stdout, stderr) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve({
-          path: cwd,
-          stdout,
-          stderr,
-        })
-      }
-    })
-  })
-}
 
 function unpack(dest) {
   let n = 0, limit = 50
