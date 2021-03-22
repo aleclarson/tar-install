@@ -11,13 +11,9 @@ await install(url, '/path/to/parent')
 ```
 
 Per the example above, `lodash` would be installed at `/path/to/parent/lodash-4.17.5`.
-The `install` promise would resolve with `{path, stdout, stderr}` if the package is not
-already installed. Otherwise, the `stdout` and `stderr` properties are omitted.
+The `install` promise resolves with the destination path.
 
-The `stdout` and `stderr` strings are from `npm install` executed in the package directory.
-
-The root directory is created if it doesn't exist, and
-it defaults to the working directory.
+The root directory is created if it doesn't exist, and it defaults to the working directory.
 
 You can use https://github.com/aleclarson/tar-url to obtain the url.
 
