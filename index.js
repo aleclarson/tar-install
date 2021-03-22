@@ -15,9 +15,7 @@ function tarInstall(url, root) {
     let name = path.basename(url, ext)
     let dest = path.join(root, name)
     if (await fs.isDir(dest)) {
-      return resolve({
-        path: dest,
-      })
+      return resolve(dest)
     }
 
     // Ensure the root exists.
@@ -34,7 +32,7 @@ function tarInstall(url, root) {
     // Unpack its contents
     .pipe(unpack(dest))
     .on('error', onError)
-    .on('finish', resolve)
+    .on('finish', () => resolve(dest))
 
     function onError(err) {
       this.end()
