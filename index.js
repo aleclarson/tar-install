@@ -12,7 +12,7 @@ function tarInstall(url, root) {
       throw Error('Expected a .tgz url')
     }
 
-    root = path.resolve(root)
+    root = path.resolve(root || '')
     let name = path.basename(url, ext)
     let dest = path.join(root, name)
     if (await fs.isDir(dest)) {
