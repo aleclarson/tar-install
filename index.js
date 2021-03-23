@@ -30,9 +30,8 @@ function tarInstall(url, root) {
     .on('error', onError)
 
     // Unpack its contents
-    .pipe(unpack(dest))
+    .pipe(unpack(dest, resolve))
     .on('error', onError)
-    .on('finish', () => resolve(dest))
 
     function onError(err) {
       this.end()
@@ -43,10 +42,11 @@ function tarInstall(url, root) {
 
 module.exports = tarInstall
 
-function unpack(dest) {
+function unpack(dest, resolve) {
   let n = 0, limit = 50
   let dirs = Object.create(null)
   let stream = tar.extract()
+  let finished = false
   return stream.on('entry', async (head, body, next) => {
     let name = path.relative('package', head.name)
 
@@ -64,7 +64,16 @@ function unpack(dest) {
 
     // Begin the next file afterwards if the limit has been hit.
     file.on('finish', () => {
-      if (limit == n--) next()
+      if (limit == n--) {
+        next()
+      } else if (n == 0 && finished) {
+        resolve(dest)
+      }
     })
+  }).on('finish', () => {
+    finished = true
+    if (n == 0) {
+      resolve(dest)
+    }
   })
 }
